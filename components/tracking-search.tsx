@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
-import dynamic from "next/dynamic";
 
 const TrackingSearch = () => {
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -16,25 +15,30 @@ const TrackingSearch = () => {
 
     setLoading(true);
     try {
-      await axios.post("https://my-webhook-endpoint.com/listen", {
-        tracking_number: trackingNumber
-      });
+      // Step 1: Register the tracking number
 
-      const response = await axios.get(
-        `https://api.ordertracker.com/public-v3/webhook-subscription`,
+      // Step 2: Fetch tracking data
+      const trackResponse = await axios.post(
+        "https://api.17track.net/track/v2.2/gettracks",
+        {
+          data: [
+            {
+              number: trackingNumber,
+              carrier: null // Optional: Specify carrier code if known
+            }
+          ]
+        },
         {
           headers: {
-            "X-Ordertracker-Key": `${process.env.NEXT_PUBLIC_ORDER_KEY}`,
-            "Content-Type": "application/json"
-          },
-          params: {
-            tracking_number: trackingNumber
+            "Content-Type": "application/json",
+            "17token": `${process.env.NEXT_PUBLIC_ORDER_KEY}` // Your 17Track API key
           }
         }
       );
 
-      if (response.data && response.data.records.length > 0) {
-        setTrackingData(response.data.records[0]);
+      if (trackResponse.data && trackResponse.data.data.length > 0) {
+        const trackingInfo = trackResponse.data.data[0];
+        setTrackingData(trackingInfo);
       } else {
         alert("No tracking data found");
       }
@@ -50,7 +54,6 @@ const TrackingSearch = () => {
     <div className="p-4 max-w-md mx-auto">
       <h2 className="text-xl font-bold mb-2">Хайх</h2>
       <div>
-        {" "}
         <input
           type="text"
           placeholder="TRACK id ыг оруулна уу"
@@ -72,21 +75,24 @@ const TrackingSearch = () => {
           <p>Дугаар: {trackingData?.tracking?.number}</p>
           <p>Хугацаа: {trackingData?.tracking?.daysInTransit}</p>
           <p>
-            Хүлээгдэх хугацаа:{" "}
-            {trackingData?.tracking?.estimatedDaysBeforeDelivery}
+            Хүлээгдэх хугацаа: {trackingData?.tracking?.estimatedDeliveryDate}
           </p>
           <h4 className="mt-2 font-semibold">Алхамууд:</h4>
           <ul>
-            {trackingData?.tracking?.steps.map((step: any, index: number) => (
-              <li key={index} className="mt-1">
-                <p>
-                  <strong>{new Date(step.time).toLocaleString()}</strong> -{" "}
-                  {step.status}
-                </p>
-                <p>{step.lines.join(" ")}</p>
-                <p>Зогсолт: {step.courier}</p>
-              </li>
-            ))}
+            {trackingData?.tracking?.checkpoints?.map(
+              (checkpoint: any, index: number) => (
+                <li key={index} className="mt-1">
+                  <p>
+                    <strong>
+                      {new Date(checkpoint.checkpointTime).toLocaleString()}
+                    </strong>{" "}
+                    - {checkpoint.status}
+                  </p>
+                  <p>{checkpoint.location}</p>
+                  <p>Тээвэрлэгч: {checkpoint.courier}</p>
+                </li>
+              )
+            )}
           </ul>
         </div>
       )}
