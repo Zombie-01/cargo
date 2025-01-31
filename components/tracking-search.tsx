@@ -48,7 +48,7 @@ const TrackingSearch = () => {
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-2">Track Your Order</h2>
+      <h2 className="text-xl font-bold mb-2">Хайх</h2>
       <div>
         {" "}
         <input
