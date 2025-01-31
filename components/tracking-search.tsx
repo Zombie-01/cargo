@@ -24,7 +24,7 @@ const TrackingSearch = () => {
         `https://api.ordertracker.com/public-v3/webhook-subscription`,
         {
           headers: {
-            "X-Ordertracker-Key": "YOUR_API_KEY",
+            "X-Ordertracker-Key": `${process.env.NEXT_PUBLIC_ORDER_KEY}`,
             "Content-Type": "application/json"
           },
           params: {
