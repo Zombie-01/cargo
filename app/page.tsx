@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Truck, Package, Clock, Phone, Search, ArrowRight } from 'lucide-react';
-import { TrackingSearch } from '@/components/tracking-search';
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Truck, Package, Clock, Phone, Search, ArrowRight } from "lucide-react";
+import TrackingSearch from "@/components/tracking-search";
 
 export default function Home() {
   return (
@@ -20,14 +20,20 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70 flex items-center justify-center">
           <div className="text-center text-white px-4 max-w-3xl w-full">
             <div className="space-y-4 animate-fade-in">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 animate-slide-up">Олон Улсын Ачаа Тээвэр</h1>
-              <p className="text-xl md:text-2xl mb-8 animate-slide-up delay-100">Найдвартай, хурдан шуурхай үйлчилгээ</p>
-              
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 animate-slide-up">
+                Олон Улсын Ачаа Тээвэр
+              </h1>
+              <p className="text-xl md:text-2xl mb-8 animate-slide-up delay-100">
+                Найдвартай, хурдан шуурхай үйлчилгээ
+              </p>
+
               {/* Tracking Search Component */}
               <TrackingSearch />
 
               <Link href="/contact">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 group">
+                <Button
+                  size="lg"
+                  className="bg-blue-600 hover:bg-blue-700 group">
                   Холбоо барих
                   <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                 </Button>
@@ -46,18 +52,38 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: Truck, title: "Ачаа тээвэр", desc: "Олон улсын ачаа тээврийн найдвартай үйлчилгээ" },
-              { icon: Package, title: "Ачаа хүргэлт", desc: "Хаяг хүртэл хүргэх үйлчилгээ" },
-              { icon: Clock, title: "Хурдан шуурхай", desc: "Түргэн шуурхай хүргэлтийн үйлчилгээ" },
-              { icon: Phone, title: "24/7 дэмжлэг", desc: "24 цагийн турш харилцагчийн үйлчилгээ" }
+              {
+                icon: Truck,
+                title: "Ачаа тээвэр",
+                desc: "Олон улсын ачаа тээврийн найдвартай үйлчилгээ"
+              },
+              {
+                icon: Package,
+                title: "Ачаа хүргэлт",
+                desc: "Хаяг хүртэл хүргэх үйлчилгээ"
+              },
+              {
+                icon: Clock,
+                title: "Хурдан шуурхай",
+                desc: "Түргэн шуурхай хүргэлтийн үйлчилгээ"
+              },
+              {
+                icon: Phone,
+                title: "24/7 дэмжлэг",
+                desc: "24 цагийн турш харилцагчийн үйлчилгээ"
+              }
             ].map((service, index) => (
-              <Card key={index} className="group hover:shadow-xl transition-shadow duration-300 border-none bg-white/50 backdrop-blur">
+              <Card
+                key={index}
+                className="group hover:shadow-xl transition-shadow duration-300 border-none bg-white/50 backdrop-blur">
                 <CardHeader>
                   <div className="mb-4 relative">
                     <div className="absolute inset-0 bg-blue-100 rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <service.icon className="h-12 w-12 text-blue-600 relative z-10 transform group-hover:scale-110 transition-transform" />
                   </div>
-                  <CardTitle className="group-hover:text-blue-600 transition-colors">{service.title}</CardTitle>
+                  <CardTitle className="group-hover:text-blue-600 transition-colors">
+                    {service.title}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600">{service.desc}</p>

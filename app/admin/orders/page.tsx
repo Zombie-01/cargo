@@ -1,69 +1,94 @@
 "use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Search, Filter, MapPin } from 'lucide-react';
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+import { Search, Filter, MapPin } from "lucide-react";
+import TrackingSearch from "@/components/tracking-search";
 
 export default function Orders() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [trackingId, setTrackingId] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [trackingId, setTrackingId] = useState("");
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
 
   // Mock data (replace with real data in production)
   const orders = [
-    { 
-      id: '1', 
-      user: 'John Doe',
-      trackingId: 'TRK123456',
-      status: 'Delivered',
-      amount: '$123',
-      date: '2024-03-20',
-      items: '2 items',
-      location: 'Ulaanbaatar',
+    {
+      id: "1",
+      user: "John Doe",
+      trackingId: "TRK123456",
+      status: "Delivered",
+      amount: "$123",
+      date: "2024-03-20",
+      items: "2 items",
+      location: "Ulaanbaatar",
       timeline: [
-        { date: '2024-03-20 15:30', status: 'Delivered', location: 'Ulaanbaatar' },
-        { date: '2024-03-19 10:15', status: 'In Transit', location: 'Darkhan' },
-        { date: '2024-03-18 08:00', status: 'Processing', location: 'Warehouse' },
+        {
+          date: "2024-03-20 15:30",
+          status: "Delivered",
+          location: "Ulaanbaatar"
+        },
+        { date: "2024-03-19 10:15", status: "In Transit", location: "Darkhan" },
+        {
+          date: "2024-03-18 08:00",
+          status: "Processing",
+          location: "Warehouse"
+        }
       ],
       coordinates: { lat: 47.9184, lng: 106.9177 }
     },
-    { 
-      id: '2', 
-      user: 'Jane Smith',
-      trackingId: 'TRK789012',
-      status: 'In Transit',
-      amount: '$456',
-      date: '2024-03-19',
-      items: '1 item',
-      location: 'Beijing',
+    {
+      id: "2",
+      user: "Jane Smith",
+      trackingId: "TRK789012",
+      status: "In Transit",
+      amount: "$456",
+      date: "2024-03-19",
+      items: "1 item",
+      location: "Beijing",
       timeline: [
-        { date: '2024-03-19 14:20', status: 'In Transit', location: 'Beijing' },
-        { date: '2024-03-18 09:30', status: 'Processing', location: 'Warehouse' },
+        { date: "2024-03-19 14:20", status: "In Transit", location: "Beijing" },
+        {
+          date: "2024-03-18 09:30",
+          status: "Processing",
+          location: "Warehouse"
+        }
       ],
       coordinates: { lat: 39.9042, lng: 116.4074 }
-    },
+    }
   ];
 
-  const filteredOrders = orders.filter(order => {
-    const matchesSearch = 
+  const filteredOrders = orders.filter((order) => {
+    const matchesSearch =
       order.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.trackingId.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = 
-      statusFilter === 'all' || 
+
+    const matchesStatus =
+      statusFilter === "all" ||
       order.status.toLowerCase() === statusFilter.toLowerCase();
 
     return matchesSearch && matchesStatus;
   });
 
   const handleTrackOrder = () => {
-    const order = orders.find(o => o.trackingId === trackingId);
+    const order = orders.find((o) => o.trackingId === trackingId);
     if (order) {
       setSelectedOrder(order);
       setShowModal(true);
@@ -80,20 +105,7 @@ export default function Orders() {
       {/* Tracking Search */}
       <Card className="bg-gradient-to-r from-blue-50 to-blue-100">
         <CardContent className="pt-6">
-          <div className="max-w-xl mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Track Order</h2>
-            <div className="flex gap-4">
-              <Input
-                placeholder="Enter tracking number..."
-                value={trackingId}
-                onChange={(e) => setTrackingId(e.target.value)}
-                className="flex-1"
-              />
-              <Button onClick={handleTrackOrder}>
-                Track
-              </Button>
-            </div>
-          </div>
+          <TrackingSearch />
         </CardContent>
       </Card>
 
@@ -113,8 +125,7 @@ export default function Orders() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border rounded-md px-3 py-2"
-          >
+            className="border rounded-md px-3 py-2">
             <option value="all">All Status</option>
             <option value="delivered">Delivered</option>
             <option value="in transit">In Transit</option>
@@ -143,20 +154,22 @@ export default function Orders() {
             </TableHeader>
             <TableBody>
               {filteredOrders.map((order) => (
-                <TableRow 
+                <TableRow
                   key={order.id}
                   className="cursor-pointer hover:bg-gray-50"
-                  onClick={() => handleOrderClick(order)}
-                >
+                  onClick={() => handleOrderClick(order)}>
                   <TableCell>#{order.id}</TableCell>
                   <TableCell>{order.trackingId}</TableCell>
                   <TableCell>{order.user}</TableCell>
                   <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      order.status === 'Delivered' ? 'bg-green-100 text-green-800' :
-                      order.status === 'In Transit' ? 'bg-blue-100 text-blue-800' :
-                      'bg-yellow-100 text-yellow-800'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs ${
+                        order.status === "Delivered"
+                          ? "bg-green-100 text-green-800"
+                          : order.status === "In Transit"
+                          ? "bg-blue-100 text-blue-800"
+                          : "bg-yellow-100 text-yellow-800"
+                      }`}>
                       {order.status}
                     </span>
                   </TableCell>
@@ -181,23 +194,42 @@ export default function Orders() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold mb-2">Order Information</h3>
+                  <h3 className="text-lg font-semibold mb-2">
+                    Order Information
+                  </h3>
                   <div className="space-y-2 text-sm">
-                    <p><span className="font-medium">Order ID:</span> #{selectedOrder.id}</p>
-                    <p><span className="font-medium">Tracking ID:</span> {selectedOrder.trackingId}</p>
-                    <p><span className="font-medium">Customer:</span> {selectedOrder.user}</p>
-                    <p><span className="font-medium">Amount:</span> {selectedOrder.amount}</p>
-                    <p><span className="font-medium">Items:</span> {selectedOrder.items}</p>
+                    <p>
+                      <span className="font-medium">Order ID:</span> #
+                      {selectedOrder.id}
+                    </p>
+                    <p>
+                      <span className="font-medium">Tracking ID:</span>{" "}
+                      {selectedOrder.trackingId}
+                    </p>
+                    <p>
+                      <span className="font-medium">Customer:</span>{" "}
+                      {selectedOrder.user}
+                    </p>
+                    <p>
+                      <span className="font-medium">Amount:</span>{" "}
+                      {selectedOrder.amount}
+                    </p>
+                    <p>
+                      <span className="font-medium">Items:</span>{" "}
+                      {selectedOrder.items}
+                    </p>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Tracking Timeline</h3>
+                  <h3 className="text-lg font-semibold mb-2">
+                    Tracking Timeline
+                  </h3>
                   <div className="relative space-y-4">
                     {selectedOrder.timeline.map((event: any, index: number) => (
                       <div key={index} className="flex gap-4">
                         <div className="w-24 text-sm text-gray-500">
-                          {event.date.split(' ')[0]}
+                          {event.date.split(" ")[0]}
                         </div>
                         <div className="flex-1 pb-4 relative">
                           <div className="absolute left-0 top-2 w-2 h-2 bg-blue-600 rounded-full"></div>
@@ -206,8 +238,12 @@ export default function Orders() {
                           )}
                           <div className="pl-6">
                             <p className="font-medium">{event.status}</p>
-                            <p className="text-sm text-gray-500">{event.location}</p>
-                            <p className="text-xs text-gray-400">{event.date.split(' ')[1]}</p>
+                            <p className="text-sm text-gray-500">
+                              {event.location}
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              {event.date.split(" ")[1]}
+                            </p>
                           </div>
                         </div>
                       </div>
