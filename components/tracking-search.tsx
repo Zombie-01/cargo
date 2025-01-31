@@ -49,31 +49,33 @@ const TrackingSearch = () => {
   return (
     <div className="p-4 max-w-md mx-auto">
       <h2 className="text-xl font-bold mb-2">Track Your Order</h2>
-      <input
-        type="text"
-        placeholder="Enter tracking number"
-        value={trackingNumber}
-        onChange={(e) => setTrackingNumber(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded mb-2"
-      />
-      <button
-        onClick={handleTrackingSearch}
-        disabled={loading}
-        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
-        {loading ? "Searching..." : "Track Order"}
-      </button>
-
+      <div>
+        {" "}
+        <input
+          type="text"
+          placeholder="TRACK id ыг оруулна уу"
+          value={trackingNumber}
+          onChange={(e) => setTrackingNumber(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded mb-2"
+        />
+        <button
+          onClick={handleTrackingSearch}
+          disabled={loading}
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+          {loading ? "Хайж байна..." : "Хайх"}
+        </button>
+      </div>
       {trackingData && (
         <div className="mt-4 p-4 border rounded">
-          <h3 className="text-lg font-semibold">Tracking Details</h3>
-          <p>Status: {trackingData?.tracking?.status}</p>
-          <p>Tracking Number: {trackingData?.tracking?.number}</p>
-          <p>Days in Transit: {trackingData?.tracking?.daysInTransit}</p>
+          <h3 className="text-lg font-semibold">Мэдээлэл</h3>
+          <p>Төлөв: {trackingData?.tracking?.status}</p>
+          <p>Дугаар: {trackingData?.tracking?.number}</p>
+          <p>Хугацаа: {trackingData?.tracking?.daysInTransit}</p>
           <p>
-            Estimated Days Before Delivery:{" "}
+            Хүлээгдэх хугацаа:{" "}
             {trackingData?.tracking?.estimatedDaysBeforeDelivery}
           </p>
-          <h4 className="mt-2 font-semibold">Steps:</h4>
+          <h4 className="mt-2 font-semibold">Алхамууд:</h4>
           <ul>
             {trackingData?.tracking?.steps.map((step: any, index: number) => (
               <li key={index} className="mt-1">
@@ -82,11 +84,10 @@ const TrackingSearch = () => {
                   {step.status}
                 </p>
                 <p>{step.lines.join(" ")}</p>
-                <p>Courier: {step.courier}</p>
+                <p>Зогсолт: {step.courier}</p>
               </li>
             ))}
           </ul>
-          <h4 className="mt-2 font-semibold">Tracking Map:</h4>
         </div>
       )}
     </div>
